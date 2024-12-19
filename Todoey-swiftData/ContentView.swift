@@ -66,7 +66,7 @@ struct ContentView: View {
             .navigationBarHidden(true)  // 隐藏默认导航栏
         }
         .sheet(isPresented: $showingAddSheet) {
-            AddItemView(isPresented: $showingAddSheet)
+            AddItemView()
         }
     }
 }

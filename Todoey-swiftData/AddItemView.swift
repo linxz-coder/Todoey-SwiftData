@@ -1,11 +1,14 @@
 import SwiftUI
 
 struct AddItemView: View {
-    @Binding var isPresented: Bool
+    
+    @Environment(\.modelContext) private var context
+    @Environment(\.dismiss) private var dismiss
+    
     @State private var title = ""
     @State private var done = false
     
-    @Environment(\.modelContext) private var context
+    
     
     var body: some View {
         NavigationView {
@@ -15,14 +18,14 @@ struct AddItemView: View {
             .navigationTitle("添加新项目")
             .navigationBarItems(
                 leading: Button("取消") {
-                    isPresented = false
+                    dismiss()
                 },
                 trailing: Button("添加") {
                     let newItem = Item(title: title, done: done)
                     context.insert(newItem)
                     do {
                         try context.save()  // 保存上下文的所有更改
-                        isPresented = false
+                        dismiss()
                     } catch {
                         print("保存数据时出错: \(error)")
                     }
@@ -31,5 +34,11 @@ struct AddItemView: View {
             )
         }
     }
+}
+
+
+#Preview {
+    AddItemView()
+        .modelContainer(for: Item.self, inMemory: true)
 }
 
